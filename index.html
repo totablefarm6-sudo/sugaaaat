@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saugaat Farms — Fresh From Farm to Road</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Work+Sans:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest: #1F3D2B;
+    --forest-deep: #142A1D;
+    --olive: #6E8B4E;
+    --gold: #D6A419;
+    --gold-soft: #EAC65A;
+    --cream: #F8F4E9;
+    --cream-dim: #EFE8D6;
+    --wood: #8A6141;
+    --ink: #24301F;
+    --white: #FFFFFF;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Work Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3{
+    font-family: 'Fraunces', serif;
+    color: var(--forest-deep);
+  }
+
+  .script{
+    font-family: 'Caveat', cursive;
+  }
+
+  a{text-decoration:none; color:inherit;}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+
+  ::selection{ background: var(--gold-soft); color: var(--forest-deep); }
+
+  /* ---------- NAV ---------- */
+  header{
+    position: fixed;
+    top:0; left:0; right:0;
+    z-index: 100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 22px 6vw;
+    transition: all .35s ease;
+    background: transparent;
+  }
+  header.scrolled{
+    padding: 12px 6vw;
+    background: rgba(248,244,233,0.92);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 18px rgba(31,61,43,0.08);
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: 1.35rem;
+    color: var(--forest-deep);
+  }
+  .brand svg{ width:30px; height:30px; }
+
+  nav ul{
+    display:flex;
+    gap: 34px;
+    font-weight:500;
+    font-size: 0.95rem;
+    letter-spacing: .02em;
+  }
+  nav a{
+    position:relative;
+    padding-bottom: 4px;
+  }
+  nav a::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:0;
+    width:0%; height:2px;
+    background: var(--gold);
+    transition: width .3s ease;
+  }
+  nav a:hover::after{ width:100%; }
+
+  .nav-cta{
+    background: var(--forest);
+    color: var(--cream);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: .9rem;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition: transform .25s ease, background .25s ease;
+  }
+  .nav-cta:hover{ background: var(--forest-deep); transform: translateY(-2px); }
+
+  .nav-toggle{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height: 100vh;
+    display:flex;
+    align-items:center;
+    padding: 0 6vw;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(214,164,25,0.10), transparent 45%),
+      linear-gradient(180deg, #FCFAF2 0%, var(--cream) 55%, var(--cream-dim) 100%);
+    overflow:hidden;
+  }
+  .hero-photo{
+    position:absolute;
+    top:0; right:0;
+    width: 58%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.5) 18%, #000 40%);
+    mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.5) 18%, #000 40%);
+    opacity: 0.9;
+    z-index: 0;
+  }
+  .hero::after{
+    content:'';
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(248,244,233,0.15) 0%, rgba(239,232,214,0.35) 100%);
+    z-index: 1;
+    pointer-events:none;
+  }
+  .hero-inner, .seal, .leaf-corner, .scroll-cue{ z-index:2; }
+
+  .leaf-corner{
+    position:absolute;
+    opacity:0.9;
+    pointer-events:none;
+  }
+  .leaf-corner.tl{ top:-40px; left:-30px; width:260px; transform: rotate(-8deg); }
+  .leaf-corner.br{ bottom:-50px; right:-40px; width:220px; transform: rotate(178deg); opacity:0.6; }
+
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    max-width: 720px;
+    padding-top: 90px;
+  }
+
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color: var(--olive);
+    font-weight:600;
+    font-size: .95rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom: 18px;
+  }
+  .eyebrow .rule{ width: 34px; height:2px; background: var(--gold); }
+
+  .hero h1{
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    line-height: 1.02;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 .farm{ color: var(--olive); display:block; }
+  .hero h1 .toroad{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    color: var(--forest);
+    font-size: 1.25em;
+    display:block;
+    margin-top: -0.15em;
+    position:relative;
+    width:fit-content;
+  }
+  .hero h1 .toroad::after{
+    content:'';
+    position:absolute;
+    left:0; bottom:2px;
+    width:100%; height:6px;
+    background: var(--gold-soft);
+    opacity:.55;
+    z-index:-1;
+  }
+
+  .hero p.tagline{
+    margin-top: 22px;
+    font-size: 1.15rem;
+    color: #3E4A36;
+    max-width: 480px;
+    font-weight:500;
+  }
+
+  .pill-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .pill{
+    background: var(--white);
+    border: 1px solid rgba(31,61,43,0.12);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: .82rem;
+    font-weight:600;
+    color: var(--forest);
+    display:flex;
+    align-items:center;
+    gap:7px;
+  }
+  .pill svg{ width:14px; height:14px; }
+
+  .hero-ctas{
+    display:flex;
+    gap:16px;
+    margin-top: 34px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    padding: 15px 30px;
+    border-radius: 40px;
+    font-weight:700;
+    font-size: .95rem;
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    transition: transform .25s ease, box-shadow .25s ease;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background: var(--forest);
+    color: var(--cream);
+    box-shadow: 0 8px 20px rgba(31,61,43,0.25);
+  }
+  .btn-primary:hover{ transform: translateY(-3px); box-shadow: 0 14px 28px rgba(31,61,43,0.32); }
+  .btn-secondary{
+    background: transparent;
+    color: var(--forest-deep);
+    border: 1.5px solid var(--forest-deep);
+  }
+  .btn-secondary:hover{ background: var(--forest-deep); color:var(--cream); transform: translateY(-3px); }
+
+  .seal{
+    position:absolute;
+    right: 8vw; top: 130px;
+    width: 130px; height:130px;
+    border: 1.5px solid var(--olive);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    animation: spin 26s linear infinite;
+  }
+  .seal-inner{
+    animation: spin-rev 26s linear infinite;
+    font-family:'Fraunces',serif;
+  }
+  .seal-inner b{ display:block; font-size: 1.05rem; color: var(--forest-deep); }
+  .seal-inner span{ font-size: .62rem; letter-spacing:.05em; color: var(--olive); font-weight:600; }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  @keyframes spin-rev{ to{ transform: rotate(-360deg); } }
+
+  @media (max-width: 900px){ .seal{ display:none; } }
+
+  .scroll-cue{
+    position:absolute;
+    bottom: 30px; left:6vw;
+    font-size:.78rem;
+    color: var(--olive);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    letter-spacing:.05em;
+  }
+  .scroll-cue .line{ width:1px; height:28px; background: var(--olive); animation: grow 1.8s ease-in-out infinite; transform-origin: top; }
+  @keyframes grow{ 0%,100%{ transform: scaleY(.4);} 50%{ transform: scaleY(1);} }
+
+  /* ---------- SECTION shared ---------- */
+  section{ padding: 120px 6vw; position:relative; }
+  .section-head{ max-width: 620px; margin: 0 auto 60px; text-align:center; }
+  .section-head .eyebrow{ justify-content:center; }
+  .section-head h2{ font-size: clamp(2rem, 4vw, 2.9rem); font-weight:700; }
+  .section-head p{ margin-top:14px; color:#4B5741; font-size:1.05rem; }
+
+  .reveal{
+    opacity:0; transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- AVAILABLE ONLINE RIBBON ---------- */
+  .ribbon{
+    background: var(--forest-deep);
+    color: var(--cream);
+    text-align:center;
+    padding: 14px 20px;
+    font-size:.92rem;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .ribbon .dot{ width:8px; height:8px; border-radius:50%; background: var(--gold); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.4; transform:scale(1.5);} }
+  .ribbon a{ color: var(--gold-soft); text-decoration:underline; text-underline-offset:3px; font-weight:700; }
+
+  /* ---------- MENU ---------- */
+  .menu-wrap{
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 26px;
+    padding: 56px clamp(24px, 5vw, 64px);
+    box-shadow: 0 30px 70px -30px rgba(31,61,43,0.25);
+    position:relative;
+    border: 1px solid rgba(31,61,43,0.06);
+  }
+  .menu-wrap::before{
+    content:'';
+    position:absolute; inset: 14px;
+    border: 1px solid rgba(214,164,25,0.35);
+    border-radius: 18px;
+    pointer-events:none;
+  }
+  .menu-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px 60px;
+  }
+  @media (max-width: 720px){ .menu-grid{ grid-template-columns: 1fr; gap:44px; } }
+
+  .menu-cat-photo{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    display: block;
+  }
+  .menu-cat h3{
+    font-size: 1.25rem;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom: 20px;
+    color: var(--forest);
+  }
+  .menu-cat h3 svg{ width:20px; height:20px; color: var(--gold); flex-shrink:0; }
+
+  .menu-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px dashed rgba(31,61,43,0.15);
+    transition: padding-left .25s ease, color .25s ease;
+  }
+  .menu-item:last-child{ border-bottom:none; }
+  .menu-item:hover{ padding-left:8px; color: var(--forest-deep); }
+  .menu-item .name{ font-weight:600; font-size:1.02rem; }
+  .menu-item .desc{ display:block; font-size:.82rem; font-weight:400; color:#7A8570; margin-top:3px; }
+  .menu-item .tag{
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color: var(--olive);
+    background: rgba(110,139,78,0.12);
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space:nowrap;
+  }
+
+  .menu-note{
+    text-align:center;
+    margin-top: 46px;
+    font-size:.92rem;
+    color:#6C7862;
+  }
+
+  /* ---------- GALLERY STRIP ---------- */
+  .gallery-strip{
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 6vw;
+  }
+  .gallery-strip img{
+    width:100%;
+    height: 190px;
+    object-fit: cover;
+    filter: saturate(1.05);
+    transition: transform .5s ease, filter .5s ease;
+  }
+  .gallery-strip a{ overflow:hidden; display:block; }
+  .gallery-strip a:hover img{ transform: scale(1.08); filter: saturate(1.2) brightness(1.03); }
+  @media (max-width: 900px){
+    .gallery-strip{ grid-template-columns: repeat(3, 1fr); }
+    .gallery-strip img{ height:130px; }
+  }
+  @media (max-width: 520px){
+    .gallery-strip{ grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ---------- WHY US STRIP ---------- */
+  .features{
+    background: var(--cream-dim);
+    padding: 70px 6vw;
+  }
+  .features-grid{
+    max-width: 1080px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    text-align:center;
+  }
+  @media (max-width: 900px){ .features-grid{ grid-template-columns: repeat(2,1fr); } }
+  .feature svg{ width:34px; height:34px; color: var(--forest); margin-bottom:12px; }
+  .feature p{ font-size:.85rem; font-weight:600; color: var(--forest-deep); }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ background: var(--forest-deep); color: var(--cream); }
+  .contact .section-head h2{ color: var(--cream); }
+  .contact .section-head p{ color: #B9C4AE; }
+  .contact .eyebrow{ color: var(--gold-soft); }
+  .contact .eyebrow .rule{ background: var(--gold-soft); }
+
+  .contact-grid{
+    max-width: 1000px;
+    margin: 0 auto;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  @media (max-width: 800px){ .contact-grid{ grid-template-columns: 1fr; } }
+
+  .contact-card{
+    background: rgba(248,244,233,0.05);
+    border: 1px solid rgba(248,244,233,0.14);
+    border-radius: 20px;
+    padding: 34px 28px;
+    text-align:center;
+    transition: transform .3s ease, background .3s ease, border-color .3s ease;
+  }
+  .contact-card:hover{
+    transform: translateY(-8px);
+    background: rgba(248,244,233,0.09);
+    border-color: rgba(248,244,233,0.3);
+  }
+  .contact-icon{
+    width: 58px; height:58px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin: 0 auto 18px;
+  }
+  .contact-icon svg{ width:26px; height:26px; }
+  .icon-whatsapp{ background: #25D366; color:#0b2b16; }
+  .icon-instagram{ background: linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7); color:#fff; }
+  .icon-facebook{ background: #1877F2; color:#fff; }
+
+  .contact-card h3{ color: var(--cream); font-size:1.15rem; margin-bottom:6px; }
+  .contact-card p{ font-size:.85rem; color:#B9C4AE; margin-bottom:20px; word-break:break-word; }
+  .contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 10px 22px;
+    border-radius:30px;
+    font-size:.85rem;
+    font-weight:700;
+    background: var(--gold);
+    color: var(--forest-deep);
+    transition: transform .25s ease, background .25s ease;
+  }
+  .contact-btn:hover{ background: var(--gold-soft); transform: translateY(-2px); }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background: var(--forest);
+    color: var(--cream);
+    padding: 46px 6vw 30px;
+    text-align:center;
+  }
+  footer .script{ font-size:1.4rem; color: var(--gold-soft); display:block; margin-bottom:14px; }
+  footer .foot-loc{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-size:.85rem; color:#CBD6C0; margin-bottom: 22px; flex-wrap:wrap;
+  }
+  footer .foot-loc svg{ width:14px; height:14px; color: var(--gold-soft); }
+  footer .copyright{ font-size:.75rem; color: #7E9070; }
+
+  @media (max-width: 760px){
+    nav ul{ display:none; }
+    .nav-cta{ display:none; }
+    section{ padding: 90px 6vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header id="siteHeader">
+  <div class="brand">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4.5 8-11.5S16 3 12 3 4 4 4 10.5 12 22 12 22z"/><path d="M12 22V8"/></svg>
+    Saugaat Farms
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <a href="https://wa.me/923165017573" target="_blank" class="nav-cta">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.1-.5-4.4-1.3l-.3-.2-3 .8.8-2.9-.2-.3C4.3 14.8 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>
+    Order Now
+  </a>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <img class="hero-photo" src="https://images.unsplash.com/photo-1717735418396-b972808504ff?fm=jpg&q=80&w=1600&auto=format&fit=crop" alt="Green farmland along a countryside road in Sindh">
+  <svg class="leaf-corner tl" viewBox="0 0 200 150" fill="none">
+    <g stroke="#6E8B4E" stroke-width="1.4" opacity="0.55">
+      <path d="M0 10 C 40 30, 80 20, 120 45"/>
+      <ellipse cx="30" cy="14" rx="12" ry="6" fill="#8FAE68" opacity="0.5" transform="rotate(-20 30 14)"/>
+      <ellipse cx="55" cy="24" rx="14" ry="7" fill="#6E8B4E" opacity="0.5" transform="rotate(-10 55 24)"/>
+      <ellipse cx="82" cy="30" rx="13" ry="6" fill="#8FAE68" opacity="0.5" transform="rotate(5 82 30)"/>
+      <ellipse cx="108" cy="42" rx="12" ry="6" fill="#6E8B4E" opacity="0.45" transform="rotate(15 108 42)"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="rule"></span> Good for you. Good for the journey.</div>
+    <h1>
+      Fresh <span class="farm">From Farm</span>
+      <span class="toroad">to Road</span>
+    </h1>
+    <p class="tagline">Authentic dairy, honey and produce sourced straight from the villages of Sindh &amp; Multan — now available online, wherever your road takes you.</p>
+
+    <div class="pill-row">
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Authentic Products</span>
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Direct From Farm</span>
+      <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> 100% Natural</span>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#menu" class="btn btn-primary">
+        View Menu
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#contact" class="btn btn-secondary">Order Online</a>
+    </div>
+  </div>
+
+  <div class="seal">
+    <div class="seal-inner">
+      <b>100%<br>Natural</b>
+      <span>Sindh &amp; Multan</span>
+    </div>
+  </div>
+
+  <div class="scroll-cue"><span class="line"></span> Scroll</div>
+</section>
+
+<!-- ================= AVAILABLE ONLINE RIBBON ================= -->
+<div class="ribbon">
+  <span class="dot"></span>
+  Now available online — order via
+  <a href="https://wa.me/923165017573" target="_blank">WhatsApp</a>,
+  <a href="https://www.instagram.com/saugaat_farms/?hl=en" target="_blank">Instagram</a>
+  or
+  <a href="https://www.facebook.com/profile.php?id=61591271295611" target="_blank">Facebook</a>
+</div>
+
+<!-- ================= GALLERY ================= -->
+<div class="gallery-strip">
+  <a href="#menu"><img src="https://images.unsplash.com/photo-1608634960479-c70cf0c3dece?fm=jpg&q=70&w=500&auto=format&fit=crop" alt="Camel milk bottles"></a>
+  <a href="#menu"><img src="https://images.unsplash.com/photo-1568657704598-602700bd9694?fm=jpg&q=70&w=500&auto=format&fit=crop" alt="Natural honey jar"></a>
+  <a href="#menu"><img src="https://images.unsplash.com/photo-1648288725055-5ba4063355b9?fm=jpg&q=70&w=500&auto=format&fit=crop" alt="Fresh dates in a bowl"></a>
+  <a href="#menu"><img src="https://images.unsplash.com/photo-1524807621076-c7ba046f3f3a?fm=jpg&q=70&w=500&auto=format&fit=crop" alt="Fresh mangoes"></a>
+  <a href="#menu"><img src="https://images.unsplash.com/photo-1655991180173-98fe17e9c4de?fm=jpg&q=70&w=500&auto=format&fit=crop" alt="Fresh lemonade bottle"></a>
+  <a href="#menu"><img src="https://images.unsplash.com/photo-1717735418396-b972808504ff?fm=jpg&q=70&w=500&auto=format&fit=crop" alt="Green farmland in Sindh and Multan"></a>
+</div>
+
+<!-- ================= MENU ================= -->
+<section id="menu">
+  <div class="section-head reveal">
+    <div class="eyebrow"><span class="rule"></span> Our Menu</div>
+    <h2>Real Food, Straight From the Village</h2>
+    <p>Every item made in small batches by farming families in Sindh and Multan — no additives, no shortcuts.</p>
+  </div>
+
+  <div class="menu-wrap reveal">
+    <div class="menu-grid">
+
+      <div class="menu-cat">
+        <img class="menu-cat-photo" src="https://images.unsplash.com/photo-1608634960479-c70cf0c3dece?fm=jpg&q=75&w=700&auto=format&fit=crop" alt="Glass bottles of fresh camel milk">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h12l-1 5H7L6 2z"/><path d="M6 7h12l1 13a2 2 0 01-2 2H7a2 2 0 01-2-2L6 7z"/><line x1="4" y1="7" x2="20" y2="7"/></svg>
+          Dairy &amp; Ghee
+        </h3>
+        <div class="menu-item">
+          <div><span class="name">Fresh Camel Milk</span><span class="desc">Raw, nutrient-rich, straight from desert herds</span></div>
+          <span class="tag">Bottle</span>
+        </div>
+        <div class="menu-item">
+          <div><span class="name">Pure Desi Ghee</span><span class="desc">Slow-churned the traditional way</span></div>
+          <span class="tag">Jar</span>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <img class="menu-cat-photo" src="https://images.unsplash.com/photo-1568657704598-602700bd9694?fm=jpg&q=75&w=700&auto=format&fit=crop" alt="Jar of natural honey">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 15c1.5-2 6.5-2 8 0"/></svg>
+          Honey &amp; Preserves
+        </h3>
+        <div class="menu-item">
+          <div><span class="name">Natural Honey</span><span class="desc">Raw, unfiltered honey from village apiaries</span></div>
+          <span class="tag">Jar</span>
+        </div>
+        <div class="menu-item">
+          <div><span class="name">Date Pickle (Achar)</span><span class="desc">Hand-preserved, tangy &amp; slow-cooked</span></div>
+          <span class="tag">Jar</span>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <img class="menu-cat-photo" src="https://images.unsplash.com/photo-1648288725055-5ba4063355b9?fm=jpg&q=75&w=700&auto=format&fit=crop" alt="Bowl of fresh dates">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C7 2 4 6 4 10c0 5 4 9 8 12 4-3 8-7 8-12 0-4-3-8-8-8z"/></svg>
+          Fresh Fruits
+        </h3>
+        <div class="menu-item">
+          <div><span class="name">Seasonal Mangoes</span><span class="desc">Sun-ripened, orchard-picked</span></div>
+          <span class="tag">Seasonal</span>
+        </div>
+        <div class="menu-item">
+          <div><span class="name">Fresh Dates</span><span class="desc">Soft, naturally sweet, sold loose</span></div>
+          <span class="tag">By Weight</span>
+        </div>
+      </div>
+
+      <div class="menu-cat">
+        <img class="menu-cat-photo" src="https://images.unsplash.com/photo-1655991180173-98fe17e9c4de?fm=jpg&q=75&w=700&auto=format&fit=crop" alt="Bottle of fresh handmade lemonade">
+        <h3>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2v6a6 6 0 006 6 6 6 0 006-6V2"/><path d="M6 22h12M12 14v8"/></svg>
+          Beverages
+        </h3>
+        <div class="menu-item">
+          <div><span class="name">Handmade Fresh Lemonade</span><span class="desc">Real lemons, made fresh to order</span></div>
+          <span class="tag">Bottle</span>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="menu-note">Prices &amp; pack sizes shared on request — message us on WhatsApp, Instagram or Facebook to order.</p>
+  </div>
+</section>
+
+<!-- ================= WHY US ================= -->
+<section id="why" class="features">
+  <div class="section-head reveal" style="margin-bottom:44px;">
+    <div class="eyebrow"><span class="rule"></span> Why Saugaat Farms</div>
+    <h2>Authentic by Nature, Premium by Choice</h2>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+      <p>Authentic Products from Trusted Sources</p>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="10" width="13" height="7" rx="1"/><circle cx="7" cy="19" r="2"/><circle cx="16" cy="19" r="2"/><path d="M16 13h4l1 4h-5"/></svg>
+      <p>Direct From Farm</p>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2C7 2 4 6 4 10c0 5 4 9 8 12 4-3 8-7 8-12 0-4-3-8-8-8z"/></svg>
+      <p>Natural &amp; Organic</p>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8l8-5 8 5v10l-8 5-8-5V8z"/></svg>
+      <p>Premium Packaging</p>
+    </div>
+    <div class="feature">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-8-4.5-8-10.5A5 5 0 0112 6a5 5 0 018 4.5C20 16.5 12 21 12 21z"/></svg>
+      <p>Made With Passion</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="contact">
+  <div class="section-head reveal">
+    <div class="eyebrow"><span class="rule"></span> Order Online</div>
+    <h2>Get Fresh Farm Products Delivered</h2>
+    <p>Message us directly — we reply fast and can arrange delivery or pickup.</p>
+  </div>
+
+  <div class="contact-grid reveal">
+
+    <div class="contact-card">
+      <div class="contact-icon icon-whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5.1-1.3C8.5 21.5 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.1-.5-4.4-1.3l-.3-.2-3 .8.8-2.9-.2-.3C4.3 14.8 4 13.4 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8z"/></svg>
+      </div>
+      <h3>WhatsApp</h3>
+      <p>+92 316 5017573</p>
+      <a href="https://wa.me/923165017573" target="_blank" class="contact-btn">Chat Now</a>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon icon-instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+      </div>
+      <h3>Instagram</h3>
+      <p>@saugaat_farms</p>
+      <a href="https://www.instagram.com/saugaat_farms/?hl=en" target="_blank" class="contact-btn">Follow Us</a>
+    </div>
+
+    <div class="contact-card">
+      <div class="contact-icon icon-facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.6c0-.9.3-1.6 1.6-1.6h1.7V4.1C16.5 4 15.4 4 14.2 4c-2.6 0-4.4 1.6-4.4 4.5v2.3H7v3.2h2.8v8h3.7z"/></svg>
+      </div>
+      <h3>Facebook</h3>
+      <p>Saugaat Farms</p>
+      <a href="https://www.facebook.com/profile.php?id=61591271295611" target="_blank" class="contact-btn">Visit Page</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <span class="script">Real Food. Real People. Real Good.</span>
+  <div class="foot-loc">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-6-6.5-6-11a6 6 0 0112 0c0 4.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+    From the Farms of Sindh &amp; Multan
+  </div>
+  <div class="copyright">&copy; <span id="yr"></span> Saugaat Farms. All rights reserved.</div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // header scroll state
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
